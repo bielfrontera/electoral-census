@@ -6,3 +6,4 @@ beautifulsoup4==4.4.1
 gunicorn==19.4.1
 itsdangerous==0.24
 requests==2.8.1
+pymssql==2.1.1

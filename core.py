@@ -1,7 +1,5 @@
-from copy import copy
-from bs4 import BeautifulSoup
-import requests
-from re import compile
+# coding: utf-8
+import pymssql
 
 
 class BaseError(Exception):
@@ -45,65 +43,57 @@ class Voter:
         }
 
     @classmethod
-    def from_li_items(cls, nif, li_items):
-        def _extract_number(li):
-            regex = compile('(\d+)')
-            text = li.text
-            res = regex.search(text)
-            return int(res.group(1).strip()) if res else None
-
-        def _extract_string(li):
-            regex = compile('(.*):(.*)')
-            text = li.text
-            res = regex.search(text)
-            return res.group(2).strip() if res else None
-
-        li_district, li_section, li_table, li_school, li_address = li_items
-
-        district = _extract_number(li_district)
-        section = _extract_number(li_section)
-        table = _extract_string(li_table)
-        school = _extract_string(li_school)
-        address = _extract_string(li_address)
+    def from_row(cls, nif, row):
+        district = row[2]
+        section = row[3]
+        table = row[4]
+        school = row[0]
+        address = row[1]
 
         return cls(nif, district, section, table, school, address)
 
 
 class ElectoralCensus:
-    URL = 'http://cens.palmademallorca.es/cens/dinamic/Consulta.htm'
-
-    DEFAULT_POST_PARAMS = {
-        'form_name': 'formcenso'
-    }
+    CODIELECCI = '7294868E2A1544759AD5C2C257395DA1'
 
     @classmethod
     def find_by_nif(cls, nif):
 
         if not nif:
-            raise NifRequiredError('bad_request', 'El camp NIF és obligatori', 400)
+            raise NifRequiredError('bad_request', 'El camp DNI és obligatori', 400)
 
-        soup = cls.get_soup(nif)
+        if len(nif) < 8:
+            raise InvalidNifError('bad_request', 'El camp DNI no té la longitud mínima', 400)
 
-        if soup.find('table', {'id': 'formcenso-errors'}):
-            error_desc = 'El NIF {} és invàlid'.format(nif)
-            raise InvalidNifError('not_found', error_desc, 404)
+        query = """
+            SELECT C.COLDESCRI, C.COLDOMIC, M.MESDISTRI, M.MESSECCIO, M.MESMESA, E.ELEMESA
+            FROM
+            ELEELECTO E, ELEMESAS M, ELECOLEGI C
+            wHERE
+            C.COLCODIGO=M.MESCOLEGI AND
+            M.MESELECCI='{elec}' AND
+            M.MESMESA = E.ELEMESA AND
+            M.MESDISTRI = E.ELEDISTRI AND
+            M.MESSECCIO = E.ELESECCIO AND
+            E.ELEMESA=M.MESMESA AND
+            E.ELEIDEN=%s AND
+            E.ELEELECCI='{elec}';
+        """.format(
+            elec=cls.CODIELECCI)
 
-        ul = soup.find('div', {'id': 'mesaInfo'})
-        li_items = ul.find_all('li')
+        try:
+            conn = pymssql.connect(host='host', user='user', password='secret', database="database")
+            cursor = conn.cursor()
+            search_nif = nif[0:8]
+            cursor.execute(query, search_nif)
+            rows = cursor.fetchall()
+        except Exception as e:
+            raise BaseError('bad_request', 'Error a l\'aplicació. Torni-ho a provar en uns moments o telefoni a l\'Ajuntament d\'Inca: {e}'.format(e=str(e)) , 400)
+        finally:
+            conn.close()
 
-        voter = Voter.from_li_items(nif, li_items)
+        if not rows:
+            raise InvalidNifError('bad_request', 'DNI {nif} no trobat a la base de dades d\'electors'.format(nif=nif), 400)
+        voter = Voter.from_row(nif, rows[0])
 
         return voter
-
-    @classmethod
-    def get_soup(cls, nif):
-        post_params = copy(cls.DEFAULT_POST_PARAMS)
-        post_params.update({
-            'nifPersona': nif,
-        })
-
-        response = requests.post(cls.URL, post_params)
-        html = response.text
-        soup = BeautifulSoup(html, 'html.parser')
-
-        return soup
