@@ -75,17 +75,17 @@ class InhabitantCertificate:
 
     def encode(self, value):
         cipher = AES.new(app.config["SECRET_KEY"].zfill(16), AES.MODE_ECB)
-        encoded = base64.b64encode(cipher.encrypt(str(value).rjust(32)))
+        encoded = base64.urlsafe_b64encode(cipher.encrypt(str(value).rjust(32)))
         return encoded
 
     def decode(self, value):
         cipher = AES.new(app.config["SECRET_KEY"].zfill(16), AES.MODE_ECB)
-        decoded = cipher.decrypt(base64.b64decode(value))
+        decoded = cipher.decrypt(base64.urlsafe_b64decode(value.encode("utf-8")))
         return decoded.strip()
 
     def to_dict(self):
         return {
-            'url_certificat': '/certificat-viatge/generate/' + self.encode(self.dboid)
+            'url_certificat': '/certificat-viatge/certificat-viatge.pdf?codi=' + self.encode(self.dboid)
         }
 
     @classmethod
@@ -199,17 +199,7 @@ class CertificatViatge:
 
         query = """
             SELECT SP_POB_HABITA.HABNOMCOM, SP_POB_HABITA.HABNUMIDE, SP_POB_HABITA.HABCONDIG,
-            SP_BDC_PAISES.PAINOMPAI, SP_POB_HABITA.HABFECNAC, SP_POB_HABITA.HABNACION, SP_POB_HABITA.HABDBOINS,
-            SP_POB_HABITA.HABNOMCOM, SP_POB_HABITA.HABTODDIR,
-            SP_POB_HABITA.HABDISTRI, SP_POB_HABITA.HABSECCIO, SP_POB_HABITA.HABCODMAN,
-            SP_BDC_PAISES.PAINACION, SP_POB_HABITA.HABNUMHOJ, SP_POB_HABITA.HABNUMORD, SP_POB_HABITA.HABCODECO,
-            SP_POB_HABITA.HABCODESI, SP_POB_HABITA.HABCODNUC, SP_POB_HABITA.HABNOMUNA, SP_POB_HABITA.HABNOPRNA,
-            SP_POB_HABITA.HABINDST1, SP_POB_HABITA.HABINDST2, SP_POB_HABITA.HABCODIND,
-            SP_POB_HABITA.HABCODPOS, SP_POB_HABITA.HABNACION,
-            SP_POB_HABITA.HABACRONI, SP_POB_HABITA.HABVIGENT, SP_POB_HABITA.HABTIPVIV, SP_POB_HABITA.HABOIDULT,
-            SP_POB_HABITA.HABNOMHAB, SP_POB_HABITA.HABAP1HAB, SP_POB_HABITA.HABAP2HAB, SP_POB_HABITA.HABPARAP1,
-            SP_POB_HABITA.HABPARAP2, SP_POB_HABITA.HABNOMUPR, SP_POB_HABITA.HABNOPRPR, SP_POB_HABITA.HABNOMUPR,
-            SP_POB_HABITA.HABFECOCU
+            SP_BDC_PAISES.PAINOMPAI, SP_POB_HABITA.HABFECNAC
             FROM SP_POB_HABITA INNER JOIN SP_BDC_PAISES ON SP_POB_HABITA.HABNACION = SP_BDC_PAISES.PAICODPAI
             WHERE SP_POB_HABITA.HABVIGENT='T' AND
             SP_POB_HABITA.HABOIDULT Is Null AND

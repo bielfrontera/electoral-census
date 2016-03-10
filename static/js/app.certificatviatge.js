@@ -18,7 +18,7 @@ jQuery(document).ready(function($){
                 $result.html("El certificat es descarregarà en breus instants. En cas contrari, clica <a href='" + data.url_certificat + "'>aquí</a>");
                 $result.show();
                 $("#submit").prop('disabled', false);
-                window.location.pathname = data.url_certificat;
+                window.location.href = data.url_certificat;
             },
             error: function(jqXHR, textStatus, errorThrown) {
                 $("#submit").prop('disabled', false);

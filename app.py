@@ -42,8 +42,9 @@ def certificat_viatge_check():
     return response
 
 
-@app.route('/certificat-viatge/generate/<encoded_dboid>')
-def certificat_viatge_generate(encoded_dboid):
+@app.route('/certificat-viatge/certificat-viatge.pdf')
+def certificat_viatge_generate():
+    encoded_dboid = request.args.get('codi')
     pdf = CertificatViatge.generate_certificate(encoded_dboid, request.url)
     return send_file(pdf.name, mimetype='application/pdf')
 
