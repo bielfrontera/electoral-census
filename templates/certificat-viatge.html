@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-title" content="Certificat de viatge - Ajuntament d'Inca">
+
+    <link rel="apple-touch-icon" href="{{ url_for('static', filename='img/icon.png') }}">
+    <title>Certificat de viatge - Ajuntament d'Inca</title>
+    <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='css/materialize.css') }}"
+          media="screen,projection"/>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+</head>
+
+<body>
+
+<div class="container">
+    <a href="http://www.incaciutat.com" title="Ajuntament d'Inca"><img src="{{ url_for('static', filename='img/ajuntament-inca.jpg') }}" alt="logotip de l'Ajuntament d'Inca" title="Ajuntament d'Inca" /></a>
+    <h4>Certificat de viatge</h4>
+
+    <div class="row">
+        <form class="col s12" id="certificatviatge">
+            <p>
+                Emissió de certificat per al descompte per residència en viatges.
+            </p>
+            <div class="row">
+                <div class="input-field col s6">
+                    <i class="mdi-action-account-circle prefix"></i>
+                    <input placeholder="DNI" id="nif" type="text">
+                    <label for="nif">DNI</label>
+                </div>
+                <div class="input-field col s6">
+                    <input placeholder="dd/mm/aaaa" id="birthdate" type="text">
+                    <label for="birthdate">Data de naixement</label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="input-field col s12">
+                    <button class="btn waves-effect waves-light col s12" type="submit" id="submit" name="action">Genera certificat
+                        <i class="mdi-content-send right"></i>
+                    </button>
+                </div>
+            </div>
+        </form>
+        <div id="errors" style="display:none;">
+            <span id="error" class="red-text text-lighten-2"></span>
+        </div>
+	<div id="result">
+	</div>
+    </div>
+    <div class="footer" style="text-align: center; color: #777; font-size: 0.8em;">
+      AJUNTAMENT D'INCA | Plaça d'Espanya, 1 07300 Inca (Illes Balears) | Tel. 871 914 000 | Fax 971 880 819 | NIF P0702700F <br/>
+    </div>
+</div>
+
+<script type="text/javascript" src="//code.jquery.com/jquery-1.11.3.min.js"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='js/materialize.min.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='js/app.certificatviatge.js') }}"></script>
+</body>
+</html>

@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="utf-8" standalone="no" ?>
+<!DOCTYPE document SYSTEM "rml_1_0.dtd">
+<document xmlns:py="http://genshi.edgewall.org/">
+  <template pageSize="(595.0,842.0)" >
+    <pageTemplate id="first">
+      <pageGraphics>
+        <fill color="#00ffff" />
+        <setFont name="Helvetica" size="12"/>
+        <image x="209" y="771" file="resources/header.jpg" width="176" height="52"/>
+      </pageGraphics>
+      <frame id="first" x1="62.0" y1="30.0" width="471" height="730"/>
+    </pageTemplate>
+  </template>
+  <stylesheet>
+    <initialize>
+      <paraStyle name="all" alignment="justify" />
+    </initialize>
+    <paraStyle name="titol" fontName="Helvetica-Bold" fontSize="14.0" leading="14" spaceBefore="0.0" spaceAfter="0.0" textColor="#000000"  alignment="center" />
+    <paraStyle name="titol_b" fontName="Helvetica-Oblique" fontSize="12.0" leading="0" spaceBefore="0.0" spaceAfter="2.0" textColor="#777777" alignment="center" />
+    <paraStyle name="etiqueta" fontName="Helvetica" fontSize="11.0" leading="10" />
+    <paraStyle name="etiqueta_b" fontName="Helvetica-Oblique" fontSize="9.0" leading="10" textColor="#777777"/>
+    <paraStyle name="texte" fontName="Helvetica" fontSize="10.0" leading="10" alignment="justify" />
+    <paraStyle name="texte_b" fontName="Helvetica" fontSize="8.0" leading="8" alignment="justify" textColor="#777777" />
+    <paraStyle name="valor" fontName="Helvetica" fontSize="12.0" leading="12" />
+    <paraStyle name="texte_peu" fontName="Helvetica" fontSize="8.0" leading="12" alignment="center" />
+    <blockTableStyle id="HeaderTable1">
+        <blockValign value="BOTTOM" />
+        <blockAlignment value="LEFT" start="0,0" stop="-1,-1"/>      
+        <blockAlignment value="RIGHT" start="-1,0" stop="-1,-1"/>
+    </blockTableStyle>    
+  </stylesheet>
+  <story>
+    <para style="titol">CERTIFICAT DE RESIDÈNCIA</para>
+    <para style="titol_b">CERTIFICADO DE RESIDENCIA</para>
+    <spacer length="0.5cm"/>
+    <blockTable class="HeaderTable1" colWidths="300,180">
+      <tr>
+        <td><para style="etiqueta">Ajuntament d'INCA (Illes Balears).</para></td>
+        <td><para style="etiqueta">Codi Municipal 070276</para></td>
+      </tr>
+      <tr>
+        <td><para style="etiqueta_b">Ayuntamiento de INCA (Illes Balears).</para></td>
+        <td><para style="etiqueta_b">Código Municipal 070276</para></td>
+      </tr>
+    </blockTable>
+    <spacer length="0.15cm"/>
+    <blockTable class="HeaderTable1" colWidths="480">
+      <tr>
+        <td><para style="etiqueta">El Secretari accidental de l'Excm. Ajuntament, Sr.GUILLERMO CORRÓ TRUYOL</para></td>        
+      </tr>
+      <tr>
+        <td><para style="etiqueta_b">El Secretario Accidental del Excmo. Ayuntamiento,</para></td>
+      </tr>
+    </blockTable>
+    <spacer length="0.15cm"/>
+    <blockTable class="HeaderTable1" colWidths="480">
+      <tr>
+        <td><para style="etiqueta">CERTIFICA que:</para></td>        
+      </tr>
+    </blockTable>
+    <spacer length="0.15cm"/>
+    <blockTable class="HeaderTable1" colWidths="110,370">
+      <tr>
+        <td><para style="etiqueta">El Sr./La Sra.:</para></td>
+        <td><para style="valor">${person.name}</para></td>
+      </tr>
+      <tr>
+        <td><para style="etiqueta_b">D./Da.:</para></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><para style="etiqueta">Amb num. DNI/NIE:</para></td>
+        <td><para style="valor">${person.id}</para></td>
+      </tr>
+      <tr>
+        <td><para style="etiqueta_b">Con nº DNI o NIE:</para></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><para style="etiqueta">Nacionalitat:</para></td>
+        <td><para style="valor">${person.nationality}</para></td>
+      </tr>
+      <tr>
+        <td><para style="etiqueta_b">Nacionalidad:</para></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><para style="etiqueta">Data de naixement:</para></td>
+        <td><para py:if="person.birthday" style="valor">${person.birthday.strftime('%d/%m/%Y')}</para></td>
+      </tr>
+    </blockTable>
+    <blockTable class="HeaderTable1" colWidths="350,130">
+      <tr>
+        <td><para style="etiqueta">(per a menors de 14 anys sense DNI)</para></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><para style="etiqueta_b">Fecha de nacimiento (para menores de 14 años sin DNI):</para></td>
+        <td></td>
+      </tr>
+    </blockTable>    
+    <blockTable class="HeaderTable1" colWidths="480">
+      <tr>
+        <td><para style="texte">Figura inscrit/a en el dia d'avui como a resident en el vigent Padró Municipal d'habitants d'aquest Ajuntament. I per deixar-ne constància a l'efecte del que es disposa en el Reial decret sobre certificacions de residència a l'efecte de la bonificació en les tarifes i determinació del procediment de liquidació per a subvencions al trànsit regular entre les Illes Canàrias, Ceuta, Melilla i les Illes Balears amb la resta del territori nacional, expedeixo el present certificat per ordre i el vist i plau del Sr. Batle, a Inca, ${today.strftime('%d/%m/%Y')}</para></td>
+      </tr>
+      <tr>
+        <td><para style="texte_b">Figura inscrito/a en el día de hoy como residente en el vigente Padrón Municipal de habitantes de este Ayuntamiento. Y para que conste a los efectos de lo dispuesto en el Real Decreto sobre certificaciones de residencia a efectos de la bonificación en las tarifas y determinación del procedimiento de liquidación para subvenciones al tráfico regular entre las Islas Canarias, Ceuta, Melilla y las Islas Baleares con el resto del territorio nacional, expido el presente certificado por orden y con el visto bueno del Sr. Alcalde, en Inca,</para></td>        
+      </tr>
+    </blockTable>
+    <spacer length="0.5cm"/>
+    <blockTable class="HeaderTable1" colWidths="30,200,200">
+      <tr>
+        <td></td>
+        <td><para style="etiqueta">Vist i plau, El Batle</para></td>        
+        <td><para style="etiqueta">El Secretari Accidental</para></td>        
+      </tr>
+      <tr>
+        <td></td>
+        <td><para style="etiqueta_b">Vº.Bº. el Alcalde,</para></td>        
+        <td><para style="etiqueta_b">El Secretario Accidental</para></td>        
+      </tr>
+      <tr>
+        <td></td>
+        <td>
+            <illustration align="CENTER" height="102" width="200" borderStrokeWidth="0">
+                <image file="resources/signatura_batle.jpg" width="158" height="102" showBoundary="no" preserveAspectRatio="yes" x="0" y="0" />
+            </illustration>
+        </td>        
+        <td>
+            <illustration align="CENTER" height="102" width="200" borderStrokeWidth="0">
+                <image file="resources/signatura_secretari.jpg" width="158" height="102" showBoundary="no" preserveAspectRatio="yes" x="0" y="0" />
+            </illustration>
+        </td>        
+      </tr>
+      <tr>
+        <td></td>
+        <td><para style="etiqueta">Virgilio Moreno Sarrió</para></td>        
+        <td><para style="etiqueta">Guillermo Corró Truyol</para></td>        
+      </tr>
+    </blockTable>
+    <spacer length="0.5cm"/>
+    <blockTable class="HeaderTable1" colWidths="480">
+      <tr>
+        <td><para style="texte">NOTA: Aquest document té caràcter informatiu en relació amb la residència i el domicili habitual en aquest municipi, d'acord amb l'establert a l'article 61 de l'RD 2612/96, de 20 de desembre, per la qual es modifica el Reglament de població y demarcació territorial de les entitats locals aprovat per RD 1690/86, d'11 de juliol.</para></td>        
+      </tr>
+      <tr>
+        <td><para style="texte_b">NOTA: Este documento tiene carácter informativo en relación a la residencia y el domicili habitual en este municipio, de acuerdo con lo establecido en el artículo 61 del RD 2612/96, de 20 de diciembre, por lo cual se modifica el Reglamento de Población y Demarcación Territorial de las entidades locales aprobado por RD 1690/86, de 11 de julio.</para></td>
+      </tr>
+    </blockTable>
+    <spacer length="0.5cm"/>
+    <blockTable class="HeaderTable1" colWidths="480">
+      <tr>
+        <td><para style="texte_peu">Plaça d'Espanya 1, 07300 Inca · tel. 871 91 40 00 · fax. 971 88 08 19 · www.incaciutat.com · CIF. P-0702700-F</para></td>        
+      </tr>
+      <tr>
+        <td><para style="texte_peu">Adreça per a la comprovació de la validesa del document: ${url_doc}</para></td>
+      </tr>
+    </blockTable>    
+  </story>
+</document>
