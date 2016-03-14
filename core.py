@@ -70,8 +70,14 @@ class Voter:
 class InhabitantCertificate:
     def __init__(self, dboid, decode=False):
         self.dboid = dboid
+        self.date = date.today()
         if decode:
-            self.dboid = self.decode(dboid)
+            codi = self.decode(dboid)
+            if '#' in codi:
+                self.dboid = codi.split('#')[0]
+                self.date = datetime.strptime(codi.split('#')[1], '%Y%m%d')
+            else:
+                self.dboid = codi
 
     def encode(self, value):
         cipher = AES.new(app.config["SECRET_KEY"].zfill(16), AES.MODE_ECB)
@@ -84,8 +90,12 @@ class InhabitantCertificate:
         return decoded.strip()
 
     def to_dict(self):
+        codi = "{}#{}".format(
+            str(self.dboid),
+            date.today().strftime('%Y%m%d'))
+        codi = self.encode(codi)
         return {
-            'url_certificat': '/certificat-viatge/certificat-viatge.pdf?codi=' + self.encode(self.dboid)
+            'url_certificat': '/certificat-viatge/certificat-viatge.pdf?codi=' + codi
         }
 
     @classmethod
@@ -176,7 +186,9 @@ class CertificatViatge:
                                    password=app.config["HABITA_DBPASS"], database=app.config["HABITA_DBNAME"],
                                    timeout=5, login_timeout=5)
             cursor = conn.cursor()
-            search_nif = nif[0:-1].zfill(9)
+            search_nif = nif[0:-1]
+            if search_nif[0].isdigit():
+                search_nif = search_nif.zfill(9)
             search_cc = nif[-1:]
             cursor.execute(query, (search_nif, search_cc, search_birthdate))
             rows = cursor.fetchall()
@@ -229,18 +241,11 @@ class CertificatViatge:
         person['name'] = rows[0][0].replace('*', ' ').replace(',', ', ')
         person['id'] = "{}{}".format(rows[0][1], rows[0][2])
         person['nationality'] = rows[0][3]
-        person['birthday'] = None
-        birthday = rows[0][4]
-        # calculate_age
-        today = date.today()
-        age = today.year - birthday.year - ((today.month, today.day) < (birthday.month, birthday.day))
-        if age < 14:
-            person['birthday'] = birthday
 
         factory = ReportFactory()
         factory.render_template(template_file=template,
                                 person=person,
-                                today=date.today(),
+                                today=record.date,
                                 url_doc=url)
         tf = tempfile.NamedTemporaryFile()
         factory.render_document(tf.name)

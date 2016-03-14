@@ -46,7 +46,7 @@
     <spacer length="0.15cm"/>
     <blockTable class="HeaderTable1" colWidths="480">
       <tr>
-        <td><para style="etiqueta">El Secretari accidental de l'Excm. Ajuntament, Sr.GUILLERMO CORRÓ TRUYOL</para></td>        
+        <td><para style="etiqueta">El Secretari accidental de l'Excm. Ajuntament, Sr. GUILLERMO CORRÓ TRUYOL</para></td>        
       </tr>
       <tr>
         <td><para style="etiqueta_b">El Secretario Accidental del Excmo. Ayuntamiento,</para></td>
@@ -69,7 +69,7 @@
         <td></td>
       </tr>
       <tr>
-        <td><para style="etiqueta">Amb num. DNI/NIE:</para></td>
+        <td><para style="etiqueta">Amb núm. DNI/NIE:</para></td>
         <td><para style="valor">${person.id}</para></td>
       </tr>
       <tr>
@@ -84,21 +84,7 @@
         <td><para style="etiqueta_b">Nacionalidad:</para></td>
         <td></td>
       </tr>
-      <tr>
-        <td><para style="etiqueta">Data de naixement:</para></td>
-        <td><para py:if="person.birthday" style="valor">${person.birthday.strftime('%d/%m/%Y')}</para></td>
-      </tr>
     </blockTable>
-    <blockTable class="HeaderTable1" colWidths="350,130">
-      <tr>
-        <td><para style="etiqueta">(per a menors de 14 anys sense DNI)</para></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td><para style="etiqueta_b">Fecha de nacimiento (para menores de 14 años sin DNI):</para></td>
-        <td></td>
-      </tr>
-    </blockTable>    
     <blockTable class="HeaderTable1" colWidths="480">
       <tr>
         <td><para style="texte">Figura inscrit/a en el dia d'avui como a resident en el vigent Padró Municipal d'habitants d'aquest Ajuntament. I per deixar-ne constància a l'efecte del que es disposa en el Reial decret sobre certificacions de residència a l'efecte de la bonificació en les tarifes i determinació del procediment de liquidació per a subvencions al trànsit regular entre les Illes Canàrias, Ceuta, Melilla i les Illes Balears amb la resta del territori nacional, expedeixo el present certificat per ordre i el vist i plau del Sr. Batle, a Inca, ${today.strftime('%d/%m/%Y')}</para></td>
@@ -150,10 +136,13 @@
     <spacer length="0.5cm"/>
     <blockTable class="HeaderTable1" colWidths="480">
       <tr>
-        <td><para style="texte_peu">Plaça d'Espanya 1, 07300 Inca · tel. 871 91 40 00 · fax. 971 88 08 19 · www.incaciutat.com · CIF. P-0702700-F</para></td>        
-      </tr>
-      <tr>
         <td><para style="texte_peu">Adreça per a la comprovació de la validesa del document: ${url_doc}</para></td>
+      </tr>
+    </blockTable>    
+    <spacer length="1.5cm"/>
+    <blockTable class="HeaderTable1" colWidths="480">
+      <tr>
+        <td><para style="texte_peu">Plaça d'Espanya 1, 07300 Inca · tel. 871 91 40 00 · fax. 971 88 08 19 · www.incaciutat.com · CIF. P-0702700-F</para></td>        
       </tr>
     </blockTable>    
   </story>
