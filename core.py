@@ -171,14 +171,18 @@ class CertificatViatge:
         except ValueError:
             raise InvalidBirthdateError('bad_request', 'El camp Data de naixement no té el format correcte', 400)
 
+        # UE countries + EEE (Islandia, Liechtenstein, Noruega) + Suissa
         query = """
             SELECT DISTINCT SP_POB_HABITA.HABDBOIDE
-            FROM SP_POB_HABITA
+            FROM SP_POB_HABITA, PAIS_ELEC, SP_BDC_PAISES
             WHERE SP_POB_HABITA.HABVIGENT='T' AND
             SP_POB_HABITA.HABOIDULT Is Null AND
             SP_POB_HABITA.HABNUMIDE=%s AND
             SP_POB_HABITA.HABCONDIG=%s AND
-            SP_POB_HABITA.HABFECNAC=%s;
+            SP_POB_HABITA.HABFECNAC=%s AND
+            PAIS_ELEC.PELCODNAC = SP_BDC_PAISES.PAICODPAI AND
+            (PAIS_ELEC.PELTIPELE = 'CE' OR
+            SP_BDC_PAISES.PAICODPAI IN (114, 116, 120, 132));
         """
         conn = None
         try:
