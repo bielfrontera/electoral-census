@@ -105,7 +105,6 @@ class InhabitantCertificate:
 
 
 class ElectoralCensus:
-    CODIELECCI = '7294868E2A1544759AD5C2C257395DA1'
 
     @classmethod
     def find_by_nif(cls, nif):
@@ -130,8 +129,8 @@ class ElectoralCensus:
             E.ELEIDEN=%s AND
             E.ELEELECCI='{elec}';
         """.format(
-            elec=cls.CODIELECCI)
-
+            elec=app.config["ELE_CODIELE"])
+        
         try:
             conn = pymssql.connect(host=app.config["ELE_DBHOST"], user=app.config["ELE_DBUSER"],
                                    password=app.config["ELE_DBPASS"], database=app.config["ELE_DBNAME"],
