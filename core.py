@@ -172,18 +172,21 @@ class CertificatViatge:
 
         # EU countries + Permanent extra-EU + EEE (Islandia, Liechtenstein, Noruega) + Suissa
         query = """
-            SELECT DISTINCT SP_POB_HABITA.HABDBOIDE
-            FROM SP_POB_HABITA, PAIS_ELEC, SP_BDC_PAISES
+            SELECT DISTINCT SP_POB_HABITA.HABDBOIDE, SP_POB_HABITA.HABDURRES, SP_POB_HABITA.HABNACION
+            FROM SP_POB_HABITA, SP_BDC_PAISES
             WHERE SP_POB_HABITA.HABVIGENT='T' AND
             SP_POB_HABITA.HABOIDULT Is Null AND
             SP_POB_HABITA.HABNUMIDE=%s AND
             SP_POB_HABITA.HABCONDIG=%s AND
             SP_POB_HABITA.HABFECNAC=%s AND
             SP_POB_HABITA.HABNACION = SP_BDC_PAISES.PAICODPAI AND
-            PAIS_ELEC.PELCODNAC = SP_BDC_PAISES.PAICODPAI AND
-            (PAIS_ELEC.PELTIPELE = 'CE' OR
-            SP_POB_HABITA.HABDURRES=1 OR
-            SP_BDC_PAISES.PAICODPAI IN (114, 116, 120, 132));
+            (
+                (SELECT COUNT(1) FROM PAIS_ELEC WHERE 
+                    PAIS_ELEC.PELCODNAC = SP_BDC_PAISES.PAICODPAI AND
+                    PAIS_ELEC.PELTIPELE = 'CE') > 0 OR
+                SP_BDC_PAISES.PAICODPAI IN (114, 116, 120, 132) OR
+                SP_POB_HABITA.HABDURRES=1
+            );
         """
         conn = None
         try:
@@ -203,10 +206,10 @@ class CertificatViatge:
         finally:
             if conn:
                 conn.close()
-
         if not rows:
             raise InvalidNifError('bad_request', 'No s\'ha trobat cap persona al padró actual amb DNI {} i data de naixement {}'.format(
                 nif, birthdate), 400)
+
         record = InhabitantCertificate.from_row(rows[0])        
         return record
 
