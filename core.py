@@ -189,10 +189,10 @@ class CertificatViatge:
                                    password=app.config["HABITA_DBPASS"], database=app.config["HABITA_DBNAME"],
                                    timeout=5, login_timeout=5)
             cursor = conn.cursor()
-            search_nif = nif[0:-1]
+            search_nif = nif[0:-1].upper()
             if search_nif[0].isdigit():
                 search_nif = search_nif.zfill(9)
-            search_cc = nif[-1:]
+            search_cc = nif[-1:].upper()
             cursor.execute(query, (search_nif, search_cc, search_birthdate))
             rows = cursor.fetchall()
         except Exception as e:
