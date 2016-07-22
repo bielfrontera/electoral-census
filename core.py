@@ -179,6 +179,7 @@ class CertificatViatge:
             SP_POB_HABITA.HABNUMIDE=%s AND
             SP_POB_HABITA.HABCONDIG=%s AND
             SP_POB_HABITA.HABFECNAC=%s AND
+            SP_POB_HABITA.HABNACION = SP_BDC_PAISES.PAICODPAI AND
             PAIS_ELEC.PELCODNAC = SP_BDC_PAISES.PAICODPAI AND
             (PAIS_ELEC.PELTIPELE = 'CE' OR
             SP_POB_HABITA.HABDURRES=1 OR
@@ -206,7 +207,7 @@ class CertificatViatge:
         if not rows:
             raise InvalidNifError('bad_request', 'No s\'ha trobat cap persona al padró actual amb DNI {} i data de naixement {}'.format(
                 nif, birthdate), 400)
-        record = InhabitantCertificate.from_row(rows[0])
+        record = InhabitantCertificate.from_row(rows[0])        
         return record
 
     @classmethod
